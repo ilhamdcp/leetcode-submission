@@ -660,3 +660,39 @@ class Solution:
                 i += 1
                 j += 1
         return nums
+
+# https://leetcode.com/problems/longest-palindromic-substring/    
+# 5. Longest Palindromic Substring
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if len(s) == 1:
+            return s
+
+        lengthToStartIndexDict = {}
+        maxSubstring = s[0]
+        for i in range(0, len(s)):
+            if 1 in lengthToStartIndexDict:
+                lengthToStartIndexDict[1].append(i)
+            else:
+                lengthToStartIndexDict[1] = [i]
+        
+        for i in range(0, len(s)):
+            if i+1 < len(s) and s[i] == s[i+1]:
+                if 2 in lengthToStartIndexDict:
+                    lengthToStartIndexDict[2].append(i)
+                else:
+                    lengthToStartIndexDict[2] = [i]
+                    if len(maxSubstring) < 2:
+                        maxSubstring = s[i:i+2]
+        
+        for i in range(3, len(s)+1):
+            palindromeList = []
+            prevPalindrome = lengthToStartIndexDict[i-2] if i-2 in lengthToStartIndexDict else []
+            for j in range(0, len(prevPalindrome)):
+                startIndex = prevPalindrome[j]
+                if startIndex - 1 >= 0 and startIndex + i - 2 < len(s) and s[startIndex - 1] == s[startIndex + i - 2]:
+                    palindromeList.append(startIndex - 1)
+                    if len(s[startIndex-1:startIndex + i - 1]) > len(maxSubstring):
+                        maxSubstring = s[startIndex-1:startIndex + i - 1]
+            lengthToStartIndexDict[i] = palindromeList
+        return maxSubstring
