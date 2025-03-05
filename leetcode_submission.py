@@ -696,3 +696,30 @@ class Solution:
                         maxSubstring = s[startIndex-1:startIndex + i - 1]
             lengthToStartIndexDict[i] = palindromeList
         return maxSubstring
+    
+# https://leetcode.com/problems/3sum/description/
+# 15. 3Sum
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        threeSums = []
+        usedTriplets = set()
+        nums.sort()
+
+        print(nums)
+
+        for i in range(0, len(nums)-2):
+            target = -nums[i]
+            left = i + 1
+            right = len(nums) - 1
+            while left < right:
+                if nums[right] + nums[left] < target:
+                    left += 1
+                elif nums[right] + nums[left] > target:
+                    right -= 1
+                else:
+                    if (nums[i], nums[left], nums[right]) not in usedTriplets:
+                        usedTriplets.add((nums[i], nums[left], nums[right]))
+                        threeSums.append([nums[i], nums[left], nums[right]])
+                    left += 1
+                    right -= 1
+        return threeSums
