@@ -723,3 +723,42 @@ class Solution:
                     left += 1
                     right -= 1
         return threeSums
+
+# https://leetcode.com/problems/find-center-of-star-graph/description/?envType=problem-list-v2&envId=graph
+# 1791. Find Center of Star Graph
+class Solution:
+    def findCenter(self, edges: List[List[int]]) -> int:
+        nodeToNumOfEdgeDict = {}
+        for i in range(0, len(edges)):
+            if edges[i][0] in nodeToNumOfEdgeDict:
+                nodeToNumOfEdgeDict[edges[i][0]] += 1
+            else:
+                nodeToNumOfEdgeDict[edges[i][0]] = 1
+
+            if edges[i][1] in nodeToNumOfEdgeDict:
+                nodeToNumOfEdgeDict[edges[i][1]] += 1
+            else:
+                nodeToNumOfEdgeDict[edges[i][1]] = 1
+            
+            if nodeToNumOfEdgeDict[edges[i][0]] == len(edges):
+                return edges[i][0]
+            if nodeToNumOfEdgeDict[edges[i][1]] == len(edges):
+                return edges[i][1]
+        return -1
+
+# https://leetcode.com/problems/all-paths-from-source-to-target/description/?envType=problem-list-v2&envId=graph
+# 797. All Paths From Source to Target
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        paths = []
+        self.findPathsRec(graph, paths, [0],  0)
+        return paths
+    
+    def findPathsRec(self, graph: List[List[int]], paths: List[List[int]], currentPath: List[int], node: int) -> None:
+        print(currentPath)
+        if node == len(graph)-1:
+            paths.append(currentPath.copy())
+        for i in range(0, len(graph[node])):
+            currentPath.append(graph[node][i])
+            self.findPathsRec(graph, paths, currentPath, graph[node][i])
+        currentPath.pop()
